@@ -1,30 +1,59 @@
-<table class="table table-hover">
-	<thead>
-		<tr>
-			<th>Organization</th>
-			<th>Name</th>
-			<th>Amount</th>
-			<th>Paid</th>
-			<th>Date</th>
-			<th>Status</th>
-			
-		</tr>
-	</thead>
-	<tbody>
-		<% @invoices.each do |invoice|%>
-		<tr>
-			<td><%= invoice['organization'] %></td>
-			<td><%= invoice['first_name'] %> <%= invoice['last_name'] %></td>
-			<td><%= invoice['currency_code'] %></td>
-			<td><%= number_to_currency(invoice['amount'], :unit => "#{invoice['currency_code']} ") %></td>
-			<td><%= number_to_currency(invoice['paid'], :unit => "#{invoice['currency_code']} ") %></td>
-			<td><%= Date.parse(invoice['date']).strftime("%B %d, %Y") %></td>
-			<td>
-				<a class="btn btn-info btn-xs" href="<%= invoice_path(invoice['invoice_id']) %>"><i class="fa fa-eye"></i> Show</a>
-				<a class="btn btn-warning btn-xs" href="<%= edit_invoice_path(invoice['invoice_id']) %>"><i class="fa fa-edit"></i> Edit</a>
-				<a class="btn btn-danger btn-xs" href="<%= invoice_path(invoice['invoice_id']) %>" data-method="delete" data-confirm="Are you sure you want to continue?"><i class="fa fa-exclamation-triangle"></i> Delete</a>
-			</td>
-		</tr>
-		<% end %>
-	</tbody>
-</table>
+<% content_for :page_content do %>
+<div class="row">
+	<h1>Invoice List <span class="pull-right"><a class="btn btn-primary btn-sm" href="#"><i class="fa fa-eye"></i> Add New Invoice</a></span></h1>
+</div>
+<hr/>
+<div class="row">
+	
+	<table id="tblInvoice" cellpadding="0" cellspacing="0" class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>Organization</th>
+				<th>Name</th>
+				<th>Amount</th>
+				<th>Paid</th>
+				<th>Date</th>
+				<th class="text-center">Status</th>
+				<th class="text-center">Actions</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<% unless @invoices.nil? %>
+				<% @invoices.each do |invoice|%>
+				<tr>
+					<td><%= invoice['organization'] %></td>
+					<td><%= invoice['first_name'] %> <%= invoice['last_name'] %></td>
+					<td><%= number_to_currency(invoice['amount'], :unit => "#{invoice['currency_code']} ") %></td>
+					<td><%= number_to_currency(invoice['paid'], :unit => "#{invoice['currency_code']} ") %></td>
+					<td><%= Date.parse(invoice['date']).strftime("%B %d, %Y") %></td>
+					<td class="text-center" style="min-width:80px;"><%= invoice['status'] %></td>
+					<td class="text-center">
+						<a class="btn btn-info btn-xs" href="<%= invoice_path(invoice['invoice_id']) %>"><i class="fa fa-eye"></i> Show</a>
+						<a class="btn btn-warning btn-xs" href="<%= edit_invoice_path(invoice['invoice_id']) %>"><i class="fa fa-edit"></i> Edit</a>
+						<a class="btn btn-danger btn-xs" href="<%= invoice_path(invoice['invoice_id']) %>" data-method="delete" data-confirm="Are you sure you want to continue?"><i class="fa fa-exclamation-triangle"></i> Delete</a>
+					</td>
+				</tr>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+<% end %>
+<% content_for :page_scripts do %>
+<script>
+	$(function(){
+		$('#tblInvoice').dataTable({
+			"bRetrieve": true, 
+			"bProcessing": true,
+			"bDestroy": true,
+			"fnDrawCallback": function( oSettings ) {
+				$('#tblInvoice').find('.sorting_1').css('background', 'none')
+				$('.dataTables_filter').find('input[type="text"]').addClass('form-control').css('display', 'inline-block').width(150)
+				// $('.dataTables_length').width(200).find('select').addClass('form-control')
+				// $('.dataTables_length').find('label').width(200)
+			}
+	});
+	})
+</script>
+<% end %>

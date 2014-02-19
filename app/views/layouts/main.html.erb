@@ -7,7 +7,9 @@
     <title>Sample Invoicing and Time Tracker</title>
 	<%= stylesheet_link_tag  "application", media: "all" %>
 	<%= stylesheet_link_tag  "bootstrap/css/bootstrap", media: "all" %>
-	<%= stylesheet_link_tag  "font-awesome/css/font-awesome.css", media: "all" %>
+	<%= stylesheet_link_tag  "font-awesome/css/font-awesome", media: "all" %>
+	<%= stylesheet_link_tag  "datatables/css/jquery.dataTables", media: "all" %>
+	<%= stylesheet_link_tag  "datatables/css/jquery.dataTables_themeroller", media: "all" %>
 	
 	<%= csrf_meta_tags %>
     <!-- Bootstrap -->
@@ -24,8 +26,11 @@
 		  min-height: 2000px;
 		  padding-top: 70px;
 		}
+		table {margin-bottom:20px !important;}
+		table thead tr {background:#222222;color:#ffffff;}
 
     </style>
+    <%= yield :page_styles %>
   </head>
   <body>
     <div class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
@@ -37,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">Project Invoice</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -66,14 +71,15 @@
       </div>
     </div>
     <div class="container">
-		<%= yield %>
+		<%= yield :page_content %>
 	</div>
 	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <%= javascript_include_tag "jquery.min", "data-turbolinks-track" => true %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-    <%= javascript_include_tag "bootstrap/js/bootstrap.min", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "jquery.min" %>
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "bootstrap/js/bootstrap.min" %>
+    <%= javascript_include_tag "datatables/jquery.dataTables.min" %>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    
+    <%= yield :page_scripts %>
   </body>
 </html>
