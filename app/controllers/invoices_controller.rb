@@ -8,7 +8,8 @@ class InvoicesController < ApplicationController
   end
     
   def show
-    
+    response_body = my_connection.invoice.get :invoice_id => params[:id]
+    render :xml => response_body
   end
   
   def new
