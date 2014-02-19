@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticate_connection
-    con = FreshBooks::Client.new('inboxbusinesssolutions.freshbooks.com', 'a329d849b73d1ceb981607a064f2bda5')
+    con = FreshBooks::Client.new(ENV['ACCOUNT_URL'], ENV['AUTH_TOKEN'])
     con
   end
   

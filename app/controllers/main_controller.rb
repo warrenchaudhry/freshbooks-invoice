@@ -3,8 +3,8 @@ class MainController < ApplicationController
   require 'rexml/document'
   
   def index
-    c = FreshBooks::Client.new('inboxbusinesssolutions.freshbooks.com', 'a329d849b73d1ceb981607a064f2bda5')
-    invoice = c.invoice.list
+    
+    invoice = my_connection.invoice.list
     # doc = REXML::Document.new(clients)
     # root = doc.root
     render :xml => invoice['invoices']['invoice'] 

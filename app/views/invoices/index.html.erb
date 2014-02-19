@@ -1,0 +1,25 @@
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Organization</th>
+			<th>Name</th>
+			<th>Amount</th>
+			<th>Paid</th>
+			<th>Date</th>
+			
+		</tr>
+	</thead>
+	<tbody>
+		<% @invoices.each do |invoice|%>
+		<tr>
+			<td><%= invoice['organization'] %></td>
+			<td><%= invoice['first_name'] %> <%= invoice['last_name'] %></td>
+			<td><%= invoice['currency_code'] %></td>
+			<td><%= number_to_currency(invoice['amount'], :unit => "#{invoice['currency_code']} ") %></td>
+			<td><%= number_to_currency(invoice['paid'], :unit => "#{invoice['currency_code']} ") %></td>
+			<td><%= Date.parse(invoice['date']).strftime("%B %d, %Y") %></td>
+			<td></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
