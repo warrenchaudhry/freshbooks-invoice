@@ -7,7 +7,7 @@ class MainController < ApplicationController
     invoice = my_connection.invoice.list
     # doc = REXML::Document.new(clients)
     # root = doc.root
-    render :xml => invoice['invoices']['invoice'] 
+    render :xml => invoice['invoices']
   end
   
 end
