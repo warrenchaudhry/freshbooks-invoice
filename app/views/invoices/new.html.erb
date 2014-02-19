@@ -1,0 +1,75 @@
+<% content_for :page_content do %>
+<div id="page-content" class="col-sm-10 col-sm-offset-1">
+	<div class="row">
+		<h1>New Invoice</h1>
+	</div>
+	<div class="clearfix"></div>
+	<hr class=""/>
+	<div class="row">
+		<%= form_tag invoices_path, :class => 'form-horizontal', :role => "form" do %>
+			<div class="form-group">
+				<label for="client_id" class="col-sm-2 control-label">Email <span class="required">*</span></label>
+				<div class="col-sm-4">
+					<%= select_tag('invoice[client_id]', options_for_select( @clients.map {|x| ["#{x['first_name']} #{x['last_name']}", x['client_id']]} ), :class => 'form-control', :required => "required" ) %>
+				</div>
+				<label for="txt_number" class="col-sm-2 control-label">Invoice No. <span class="required">*</span></label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control" id="txt_number" name="invoice[number]" value ="<%= @invoices.count + 1 %>">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="txt_date_issue" class="col-sm-2 control-label col-sm-offset-6">Date of Issue <span class="required">*</span></label>
+				<div class="col-sm-4">
+					<input  name="invoice[date]" type="date" required="required" class="form-control" id="txt_date_issue">
+				</div>
+				
+			</div>
+			<div class="form-group">
+				<label for="txt_po_no" class="col-sm-2 control-label col-sm-offset-6">PO Number</label>
+				<div class="col-sm-4">
+					<input type="text" name="invoice[po_number]" class="form-control" id="txt_po_no">
+				</div>
+				
+			</div>
+			<div class="form-group">
+				<label for="txt_discount" class="col-sm-2 control-label col-sm-offset-6">Discount</label>
+				<div class="col-sm-4">
+					<div class="input-group">
+					
+					<input type="text" name="invoice[discount]" class="form-control" id="txt_po_no">
+					<span class="input-group-addon">@</span>
+					
+					</div>
+				</div>
+			</div>
+			
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td>Task</td>
+						<td>Time Entry Notes</td>
+						<td>Rate</td>
+						<td>Hours</td>
+						<td>Tax</td>
+						<td>Tax</td>
+						<td>Line Total</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><%= select_tag('invoice[client_id]', options_for_select( @clients.map {|x| ["#{x['first_name']} #{x['last_name']}", x['client_id']]} ), :class => 'form-control', :required => "required" ) %></td>
+						<td><input type="text" class="form-control"></td>
+						<td><input type="text" class="form-control"></td>
+						<td><input type="text" class="form-control num"></td>
+						<td><select class="form-control"></select></td>
+						<td><select class="form-control"></select></td>
+						<td></td>	
+					</tr>
+				</tbody>
+			</table>
+			
+			<%= submit_tag("Submit", :class => "btn btn-primary")%>
+		<% end %>		
+	</div>
+</div>
+<% end %>
