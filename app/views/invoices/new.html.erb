@@ -1,16 +1,21 @@
+<% content_for :page_styles do %>
+<style>
+	.required {color:red;font-weight:bold;font-size:13px;}
+</style>
+<% end %>
 <% content_for :page_content do %>
 <div id="page-content" class="col-sm-10 col-sm-offset-1">
 	<div class="row">
-		<h1>New Invoice</h1>
+		<h1>New Invoice </h1>
 	</div>
 	<div class="clearfix"></div>
 	<hr class=""/>
 	<div class="row">
 		<%= form_tag invoices_path, :class => 'form-horizontal', :role => "form" do %>
 			<div class="form-group">
-				<label for="client_id" class="col-sm-2 control-label">Email <span class="required">*</span></label>
+				<label for="client_id" class="col-sm-2 control-label">Client <span class="required">*</span></label>
 				<div class="col-sm-4">
-					<%= select_tag('invoice[client_id]', options_for_select( @clients.map {|x| ["#{x['first_name']} #{x['last_name']}", x['client_id']]} ), :class => 'form-control', :required => "required" ) %>
+					<%= select_tag('invoice[client_id]', options_for_select( @clients.map {|x| ["#{x['first_name']} #{x['last_name']}", x['client_id']]} ), include_blank: true, :class => 'form-control', :required => "required" ) %>
 				</div>
 				<label for="txt_number" class="col-sm-2 control-label">Invoice No. <span class="required">*</span></label>
 				<div class="col-sm-4">
@@ -36,7 +41,7 @@
 				<div class="col-sm-4">
 					<div class="input-group">
 					
-					<input type="text" name="invoice[discount]" class="form-control" id="txt_po_no">
+					<input type="text" name="invoice[discount]" class="form-control num" id="txt_discount">
 					<span class="input-group-addon">@</span>
 					
 					</div>
@@ -50,26 +55,72 @@
 						<td>Time Entry Notes</td>
 						<td>Rate</td>
 						<td>Hours</td>
-						<td>Tax</td>
-						<td>Tax</td>
+						
 						<td>Line Total</td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td><%= select_tag('invoice[client_id]', options_for_select( @clients.map {|x| ["#{x['first_name']} #{x['last_name']}", x['client_id']]} ), :class => 'form-control', :required => "required" ) %></td>
-						<td><input type="text" class="form-control"></td>
-						<td><input type="text" class="form-control"></td>
-						<td><input type="text" class="form-control num"></td>
-						<td><select class="form-control"></select></td>
-						<td><select class="form-control"></select></td>
-						<td></td>	
+						
+						<td style="width:22%"><%= select_tag('invoice[lines][name]', options_for_select( @tasks.map {|x| x['name'] } ), include_blank: true, :class => 'form-control', :required => "required" ) %></td>
+						<td style="width:32%"><input type="text" name="invoice[lines][description]" class="form-control"></td>
+						<td><input type="text" name="invoice[lines][unit_cost]"  class="form-control num txtRate"></td>
+						<td><input type="text" name="invoice[lines][quantity]" class="form-control num txtQty"></td>
+						<td><input type="text" name="invoice[lines][amount]" class="form-control num txtAmount" readonly="readonly" value="0"><input type="hidden" value="Task" name="invoice[lines][type]" /></td>	
 					</tr>
+					
 				</tbody>
 			</table>
-			
-			<%= submit_tag("Submit", :class => "btn btn-primary")%>
+			<hr />
+			<div class="col-sm-12">
+				<div class="col-sm-4 col-sm-offset-8">
+					<span><strong>Invoice Total</strong></span>
+					<span id="invTotal" class="pull-right">0</span>
+				</div>
+			</div>
+			<br class="clearfix" />
+			<hr />
+			<%= submit_tag("Submit", :class => "btn btn-primary pull-right")%>
 		<% end %>		
 	</div>
 </div>
+<% end %>
+
+<% content_for :page_scripts do %>
+<script>
+	$(function(){
+		$('.txtRate').on('blur', function(){
+			rate = $(this).val();
+			qty = $(this).parent().next().find('.txtQty');
+			if(qty.val() != ''){
+				
+				totalAmt = rate * qty.val();
+				$(qty).parent().next().find('.txtAmount').val(totalAmt.toFixed(2));
+				// $('#invTotal').html('<strong>' + totalAmt.toFixed(2) + '</strong>');
+				computeNetAmount();
+			}
+		})
+	
+		$('.txtQty').on('blur', function(){
+			qty = $(this).val();
+			
+			rate_input = $(this).parent().prev().find('.txtRate');
+			rate = rate_input.val();
+			if(qty != ''){
+				totalAmt = rate * qty;
+				$(this).parent().next().find('.txtAmount').val(totalAmt.toFixed(2));
+				computeNetAmount();
+			}
+		})
+		
+		function computeNetAmount(){
+			amount = 0
+			$('.txtAmount').each(function(){
+				amount += parseFloat($(this).val());	
+			})
+			$('#invTotal').html('<strong>' + amount.toFixed(2) + '</strong>');
+			
+		};
+	})
+</script>
 <% end %>

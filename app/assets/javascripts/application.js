@@ -13,3 +13,16 @@
 //= require jquery_ujs
 
 
+$(function(){
+	$('body').on('keypress', '.num', function(e){
+		var arr = [];
+	    var key = e.which;
+	
+	    for (i = 48; i < 58; i++){
+	        arr.push(i);
+        }
+		arr.push(46); // for dot 
+	    if (!(arr.indexOf(key)>=0))
+	        e.preventDefault();
+	});
+})

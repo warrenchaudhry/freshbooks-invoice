@@ -5,24 +5,27 @@ class InvoicesController < ApplicationController
   def index
     response_body = my_connection.invoice.list
     @invoices = response_body['invoices']['invoice']
-    
   end
     
   def show
-    response_body = my_connection.invoice.get :invoice_id => params[:id]
-    render :xml => response_body
+    @invoice = Invoice.new(my_connection)
+    render :xml => @invoice.show(params[:id])
   end
   
   def new
-    request_clients = my_connection.client.list
-    request_invoice_list = my_connection.invoice.list
-    request_tasks_list = my_connection.task.list
-    request_taxes_list = my_connection.tax.list
-    @invoices = request_invoice_list['invoices']['invoice']
-    @clients = request_clients['clients']['client']
-    @tasks = request_tasks_list['tasks']['task']
-    @taxes = request_taxes_list['taxes']['tax'] 
-    #render :xml => @tasks
+    clients_init = Client.new(my_connection)
+    @clients = clients_init.list
+    invoices_init = Invoice.new(my_connection)
+    @invoices = invoices_init.list
+    tasks_init = Task.new(my_connection)
+    @tasks = tasks_init.list
+    # taxes_init = Tax.new(my_connection)
+    # @taxes = taxes_init.list
+    #render :json => @taxes['tax_id']
+    
+    
+     
+    
     #render :text => controller_path 
     
   end
@@ -36,6 +39,28 @@ class InvoicesController < ApplicationController
   end
   
   def create
-    render :json => params['invoice']
+    response_body = my_connection.invoice.create(:invoice => {
+      :client_id =>  params[:invoice][:client_id],
+      :number =>  params[:invoice][:number],
+      :status =>  'draft',
+      :date =>  params[:invoice][:date],
+      :po_number =>  params[:invoice][:po_number],
+      :discount =>  params[:invoice][:discount],
+      :lines => [{:line =>
+                    {
+                        :name => params[:invoice][:lines][:name],
+                        :description => params[:invoice][:lines][:description],
+                        :unit_cost => params[:invoice][:lines][:unit_cost],
+                        :quantity => params[:invoice][:lines][:quantity]
+                    }
+      }]   
+    })
+    if response_body['invoice_id']
+      redirect_to invoices_path
+    else
+      render :action => 'new'
+    end
+    #render :json => params[:invoice]
+    
   end
 end
