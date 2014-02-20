@@ -8,7 +8,7 @@ group :development do
 gem 'sqlite3'
 end
 
-
+gem 'httparty'
 gem 'nokogiri'
 gem 'ruby-freshbooks'
 #gem 'freshbooks'

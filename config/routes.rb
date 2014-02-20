@@ -3,7 +3,8 @@ TimeTracker::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
   match '/' => 'invoices#index', :via => :get
   resources :invoices
-  resources :clients 
+  resources :clients
+  resources :time_entries 
   root 'invoices#index'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
