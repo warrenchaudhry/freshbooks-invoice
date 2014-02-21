@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
     @my_project = Project.new(token)
     @project = @my_project.get
     @user = @my_project.user
-    @time_entries = @my_project.get_time_entries
+    @time_entries = @my_project.get_time_entries(@project['id'], @user['id'])
     @task = @my_project.get_task_name(@project['id'], 59843)
     @total_mins = @time_entries.inject(0) {|sum, x| sum + x['duration_in_minutes'].to_i }
      
