@@ -35,7 +35,11 @@ class Project
 
     api_url = "http://www.worksnaps.net/api/projects/#{project_id}/users/#{user_id}/time_entries.xml?from_timestamp=#{start_time_stamp}&to_timestamp=#{end_time_stamp}"
     req = self.class.get(api_url, {:basic_auth => @auth})
-    parsed_data = req.parsed_response['time_entries']['time_entry']    
+    parsed_data = req.parsed_response#['time_entries']['time_entry']
+    time_entries = parsed_data['time_entries']['time_entry']
+    return [] if time_entries.nil?
+    return time_entries
+           
   end
   
   def get_task_name(project_id, task_id)
