@@ -10,13 +10,13 @@ class ProjectsController < ApplicationController
     @user = @my_project.user
     @time_entries = @my_project.get_time_entries(@project['id'], @user['id'])
     @task = @my_project.get_task_name(@project['id'], 59843)
-    # if @time_entries.nil?
-      # @total_mins = 0
-    # else
-      # @total_mins = @time_entries.inject(0) {|sum, x| sum + x['duration_in_minutes'].to_i }
-    # end
+    if @time_entries.nil?
+      @total_mins = 0
+    else
+      @total_mins = @time_entries.inject(0) {|sum, x| sum + x['duration_in_minutes'].to_i }
+    end
     
-    render :xml => @time_entries
+    #render :xml => @time_entries
     
   end
   

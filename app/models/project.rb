@@ -30,15 +30,14 @@ class Project
   end
   
   def get_time_entries(project_id, user_id)
-    start_time_stamp = Date.today.to_time.to_i
-    end_time_stamp = (Date.today + 2).to_time.to_i
+    start_time_stamp = (Date.parse("2014-02-19")).to_time.to_i
+    end_time_stamp = (Date.parse("2014-02-25")).to_time.to_i
 
     api_url = "http://www.worksnaps.net/api/projects/#{project_id}/users/#{user_id}/time_entries.xml?from_timestamp=#{start_time_stamp}&to_timestamp=#{end_time_stamp}"
     req = self.class.get(api_url, {:basic_auth => @auth})
     parsed_data = req.parsed_response#['time_entries']['time_entry']
-    time_entries = parsed_data#['time_entries']['time_entry']
-    return [] if time_entries.nil?
-    return time_entries
+    return [] if parsed_data['time_entries'].nil?
+    return parsed_data['time_entries']['time_entry']
            
   end
   
