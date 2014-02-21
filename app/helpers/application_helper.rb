@@ -2,7 +2,7 @@ module ApplicationHelper
   
   def build_navs
     nav_elems = ''
-    navs = ['Home', 'Invoices', 'Clients']
+    navs = ['Home', 'Invoices', 'Projects']
     navs.each do |nav|
       case nav
       when 'Home'
@@ -11,6 +11,8 @@ module ApplicationHelper
         nav_path = invoices_path
       when 'Clients'
         nav_path = clients_path
+      when 'Projects'
+        nav_path = projects_path
       end
         
       nav_elems += '<li class="' + (controller_path.capitalize == nav || (nav == 'Home' && controller_path == "main" )  ? "active" : "") + '"><a href='"#{nav_path}"'>' + nav + '</a></li>'

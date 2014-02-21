@@ -30,8 +30,8 @@
 					<td class="text-center" style="min-width:80px;"><%= invoice['status'] %></td>
 					<td class="text-center">
 						<a class="btn btn-info btn-xs" href="<%= invoice_path(invoice['invoice_id']) %>"><i class="fa fa-eye"></i> Show</a>
-						<a class="btn btn-warning btn-xs" href="<%= edit_invoice_path(invoice['invoice_id']) %>"><i class="fa fa-edit"></i> Edit</a>
-						<a class="btn btn-danger btn-xs" href="<%= invoice_path(invoice['invoice_id']) %>" data-method="delete" data-confirm="Are you sure you want to continue?"><i class="fa fa-exclamation-triangle"></i> Delete</a>
+						<!-- <a class="btn btn-warning btn-xs" href="<#%= edit_invoice_path(invoice['invoice_id']) %>"><i class="fa fa-edit"></i> Edit</a>
+						<a class="btn btn-danger btn-xs" href="<#%= invoice_path(invoice['invoice_id']) %>" data-method="delete" data-confirm="Are you sure you want to continue?"><i class="fa fa-exclamation-triangle"></i> Delete</a> -->
 					</td>
 				</tr>
 				<% end %>

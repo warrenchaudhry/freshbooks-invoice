@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticate_connection
-    con = FreshBooks::Client.new(FRESHBOOKS[:account_url], FRESHBOOKS[:auth_token])
+    con = FreshBooks::Client.new(APP_VARS[:account_url], APP_VARS[:auth_token])
     con
   end
   

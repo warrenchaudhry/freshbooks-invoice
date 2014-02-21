@@ -4,7 +4,9 @@ TimeTracker::Application.routes.draw do
   match '/' => 'invoices#index', :via => :get
   resources :invoices
   resources :clients
-  resources :time_entries 
+  resources :time_entries
+  resources :projects
+  match '/projects/:project_id/time_entries/:time_entry_id' => 'projects#show_entry', :via => :get, :as => 'show_time_entry' 
   root 'invoices#index'
   # You can have the root of your site routed with "root"
   # root 'welcome#index'

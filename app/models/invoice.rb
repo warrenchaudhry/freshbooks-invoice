@@ -11,7 +11,8 @@ class Invoice
   end
   
   def show(invoice_id)
-    invoice = @connection.invoice.get :invoice_id => invoice_id
+    resp = @connection.invoice.get :invoice_id => invoice_id
+    return resp['invoice']
   end
   
   def create

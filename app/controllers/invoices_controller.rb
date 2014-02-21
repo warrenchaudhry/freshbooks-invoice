@@ -8,8 +8,23 @@ class InvoicesController < ApplicationController
   end
     
   def show
-    @invoice = Invoice.new(my_connection)
-    render :xml => @invoice.show(params[:id])
+    req_invoice = Invoice.new(my_connection)
+    @invoice = req_invoice.show(params[:id])
+    @items = []
+    @time_entries = []
+    lines =  @invoice['lines']['line']
+    if lines.is_a?(Hash)
+      if lines['type'] == 'Time'
+        @items << lines
+      else
+        @time_entries << lines
+      end
+    else
+      @items =  lines.select {|line| line['type'] == 'Item'}
+      @time_entries  =  lines.select {|line| line['type'] == 'Time'}
+    end
+    #@items=
+    #render :xml => @invoice  
   end
   
   def new
